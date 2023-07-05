@@ -14,14 +14,17 @@ exports.login = (req, res) => {
       "male",
       "address",
       "email",
+      "roleId",
     ],
   }).then((data) => {
     if (data !== null) {
       var user = {
         id: data.id,
         avatar: data.avatar,
+        role: data.roleId,
         // role: data[0].Roles[0].name,
       };
+    //   console.log("sss",data);
       var token = jwt.sign({ user }, ACCESS_TOKEN_SECRET, {
         algorithm: "HS256",
         // expiresIn: "3h",

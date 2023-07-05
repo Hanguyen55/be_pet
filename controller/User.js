@@ -102,6 +102,7 @@ exports.register = (req, res) => {
       "male",
       "address",
       "email",
+      "roleId",
     ],
   })
     .then((data) => {
