@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      userId: {
+        type: Sequelize.INTEGER,
+        // references: {
+        //   model: "Users",
+        //   key: "id",
+        // },
+        // onDelete: "CASCADE",
+      },
       userName: {
         type: Sequelize.STRING,
       },
@@ -21,6 +29,12 @@ module.exports = {
         type: Sequelize.STRING(5000),
       },
       price: {
+        type: Sequelize.INTEGER,
+      },
+      status: {
+        type: Sequelize.INTEGER,
+      },
+      paymentType: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

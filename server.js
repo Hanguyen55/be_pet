@@ -19,6 +19,7 @@ require("./routes/New")(app);
 require("./routes/User")(app);
 require("./routes/Role")(app);
 require("./routes/Weight")(app);
+require("./routes/PriceService")(app);
 require("./routes/Service")(app);
 require("./routes/Gallery")(app);
 require("./routes/Contact")(app);

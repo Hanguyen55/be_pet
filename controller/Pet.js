@@ -231,10 +231,12 @@ exports.delete = (req, res) => {
 };
 exports.countTypePet = (req, res) => {
   Pet.findAll({
-    where: { status: 1 },
+    // where: { status: 1 },
+    where: { checkAdmin: 2 },
     attributes: ["type"],
   })
     .then((data) => {
+        console.log("dataaa",data);
       let dog = 0;
       let cat = 0;
       let other = 0;
@@ -253,6 +255,7 @@ exports.countTypePet = (req, res) => {
         countCat: cat,
         countOther: other,
         countAll: data.length,
+        countdata: data,
       });
     })
     .catch((er) => {

@@ -16,6 +16,9 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
+      price: {
+        type: Sequelize.STRING
+      },
       serviceId: {
         type: Sequelize.INTEGER,
         references: {

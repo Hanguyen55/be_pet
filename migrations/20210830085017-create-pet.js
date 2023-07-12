@@ -14,7 +14,10 @@ module.exports = {
       avatar: {
         type: Sequelize.STRING(500),
       },
-      price: {
+      priceStart: {
+        type: Sequelize.STRING,
+      },
+      priceEnd: {
         type: Sequelize.STRING,
       },
       userId: {

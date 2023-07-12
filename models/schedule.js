@@ -19,10 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     note: DataTypes.TEXT,
     phone: DataTypes.STRING,
+    status: DataTypes.INTEGER,
     typePet: DataTypes.STRING,
     typeService: DataTypes.STRING,
     typeWeight: DataTypes.STRING,
-    date: DataTypes.STRING
+    date: DataTypes.STRING,
+    result: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Schedule',

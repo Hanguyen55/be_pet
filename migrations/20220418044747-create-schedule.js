@@ -23,6 +23,9 @@ module.exports = {
       phone: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.INTEGER,
+      },
       typePet: {
         type: Sequelize.STRING
       },
@@ -33,6 +36,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       date: {
+        type: Sequelize.STRING
+      },
+      result: {
         type: Sequelize.STRING
       },
       createdAt: {
