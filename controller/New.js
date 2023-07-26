@@ -1,12 +1,14 @@
 var New = require("../models").New;
-var TagNew = require("../models").TagNew;
+// var TagNew = require("../models").TagNew;
 var Tag = require("../models").Tag;
 var User = require("../models").User;
 const Op = require("Sequelize").Op;
 require("dotenv").config();
 let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 exports.create = (req, res) => {
-  New.create(req.body, { include: ["tagnew"] })
+  New.create(req.body,
+    //  { include: ["tagnew"] }
+     )
     .then((data) => {
       res.json({ data: data });
     })
@@ -81,7 +83,7 @@ exports.findone = (req, res) => {
   New.findOne({
     where: { id: req.params.id },
     include: [
-      { model: Tag },
+    //   { model: Tag },
       { model: User, attributes: ["firstName", "lastName"] },
     ],
   })
@@ -116,10 +118,10 @@ exports.delete = (req, res) => {
 exports.update = (req, res) => {
   New.update(req.body, {
     where: { id: req.params.id },
-    include: {
-      model: TagNew,
-      as: "tagnew",
-    },
+    // include: {
+    //   model: TagNew,
+    // //   as: "tagnew",
+    // },
   })
     .then((data) => {
       res.json({ data: data });

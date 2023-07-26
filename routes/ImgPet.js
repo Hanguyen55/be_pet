@@ -4,6 +4,7 @@ module.exports = (app) => {
 
   router.post("/", ImagePet.create);
   router.get("/", ImagePet.findall);
+  router.get("/all", ImagePet.findallpet);
   router.get("/:id", ImagePet.findone);
   router.delete("/:id", ImagePet.delete);
   router.patch("/:id", ImagePet.update);

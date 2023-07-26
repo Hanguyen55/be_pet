@@ -1,14 +1,23 @@
 var Pet = require("../models").Pet;
 var Product = require("../models").Product;
 var Category = require("../models").Category;
+var CategoryPet = require("../models").CategoryPet;
+var ImagePet = require("../models").ImagePet;
 const Op = require("Sequelize").Op;
 var User = require("../models").User;
 require("dotenv").config();
 let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 exports.create = (req, res) => {
-  console.log(req.body);
+//   console.log(req.body);
   Pet.create(req.body, { include: ["imgpet"] })
     .then((data) => {
+        ImagePet.findAll({ where: { petId : null}})
+        .then((data2) => {
+            for (let i = 0; i < data2.length; i++) {
+                let newData= {id: data2[i].dataValues.id,petId: data.dataValues.id}
+                ImagePet.update(newData, { where: { id: newData.id } })
+            }
+          })
       res.json({ data: data });
     })
     .catch((er) => {
@@ -26,7 +35,10 @@ exports.findall = (req, res) => {
         order: [["createdAt", "DESC"]],
         offset: soLuongBoQua,
         limit: PAGE_SIZE,
-        where: { checkAdmin: 2, quantity: { [Op.ne]: 0 } },
+        where: { 
+            status: 1,
+            // checkAdmin: 2,
+             quantity: { [Op.ne]: 0 } },
       })
         .then((data) => {
           res.json({ data: data });
@@ -36,7 +48,9 @@ exports.findall = (req, res) => {
         });
     } else if (status && !page) {
       Pet.findAndCountAll({
-        where: { status: status, checkAdmin: 2, quantity: { [Op.ne]: 0 } },
+        where: { status: status,
+            //  checkAdmin: 2,
+              quantity: { [Op.ne]: 0 } },
         order: [["createdAt", "DESC"]],
       })
         .then((data) => {
@@ -47,7 +61,9 @@ exports.findall = (req, res) => {
         });
     } else {
       Pet.findAndCountAll({
-        where: { status: status, checkAdmin: 2, quantity: { [Op.ne]: 0 } },
+        where: { status: status,
+            //  checkAdmin: 2, 
+             quantity: { [Op.ne]: 0 } },
         order: [["createdAt", "DESC"]],
         offset: soLuongBoQua,
         limit: PAGE_SIZE,
@@ -62,7 +78,10 @@ exports.findall = (req, res) => {
   } else {
     Pet.findAndCountAll({
       order: [["createdAt", "DESC"]],
-      where: { checkAdmin: 2, quantity: { [Op.ne]: 0 } },
+      where: {
+         status: 1,
+        //  checkAdmin: 2,
+         quantity: { [Op.ne]: 0 } },
     })
       .then((data) => {
         res.json({ data: data });
@@ -74,19 +93,19 @@ exports.findall = (req, res) => {
 };
 exports.getAllShop = (req, res) => {
   var page = req.query.page;
-  var type = req.query.type;
+  var CategoryPetId = req.query.CategoryPetId;
   var name = req.query.name;
   var category = req.query.category;
   var petOrProduct = req.query.petOrProduct;
   page = parseInt(page);
   let soLuongBoQua = (page - 1) * PAGE_SIZE;
   if (petOrProduct === "pet") {
-    if (type && name) {
+    if (CategoryPetId && name) {
       Pet.findAndCountAll({
         where: {
           status: 1,
-          checkAdmin: 2,
-          type: type,
+        //   checkAdmin: 2,
+          CategoryPetId: CategoryPetId,
           name: { [Op.like]: `%${name}%` },
         },
         order: [["createdAt", "DESC"]],
@@ -99,9 +118,11 @@ exports.getAllShop = (req, res) => {
         .catch((er) => {
           throw er;
         });
-    } else if (type && !name) {
+    } else if (CategoryPetId && !name) {
       Pet.findAndCountAll({
-        where: { status: 1, checkAdmin: 2, type: type },
+        where: { status: 1, 
+            // checkAdmin: 2,
+             CategoryPetId: CategoryPetId },
         order: [["createdAt", "DESC"]],
         offset: soLuongBoQua,
         limit: PAGE_SIZE,
@@ -112,11 +133,11 @@ exports.getAllShop = (req, res) => {
         .catch((er) => {
           throw er;
         });
-    } else if (!type && name) {
+    } else if (!CategoryPetId && name) {
       Pet.findAndCountAll({
         where: {
           status: 1,
-          checkAdmin: 2,
+        //   checkAdmin: 2,
           name: { [Op.like]: `%${name}%` },
         },
         order: [["createdAt", "DESC"]],
@@ -131,7 +152,9 @@ exports.getAllShop = (req, res) => {
         });
     } else {
       Pet.findAndCountAll({
-        where: { status: 1, checkAdmin: 2 },
+        where: { status: 1,
+            //  checkAdmin: 2
+             },
         order: [["createdAt", "DESC"]],
         offset: soLuongBoQua,
         limit: PAGE_SIZE,
@@ -171,13 +194,15 @@ exports.checkPet = (req, res) => {
   let soLuongBoQua = (page - 1) * PAGE_SIZE;
   if (page) {
     Pet.findAndCountAll({
-      where: { checkAdmin: { [Op.ne]: [0] } },
+    //   where: { status: { [Op.ne]: [0] } },
+    //   where: { checkAdmin: { [Op.ne]: [0] } },
       order: [["id", "DESC"]],
       offset: soLuongBoQua,
       limit: PAGE_SIZE,
       include: [{ model: User, attributes: ["firstName", "lastName"] }],
     })
       .then((data) => {
+        console.log("checkPet",data.dataValues);
         res.json({ data: data });
       })
       .catch((er) => {
@@ -186,7 +211,8 @@ exports.checkPet = (req, res) => {
   } else {
     Pet.findAndCountAll({
       where: {
-        checkAdmin: { [Op.ne]: [0] },
+        status: { [Op.ne]: [0] },
+        // checkAdmin: { [Op.ne]: [0] },
       },
       order: [["id", "DESC"]],
       include: [User],
@@ -231,32 +257,35 @@ exports.delete = (req, res) => {
 };
 exports.countTypePet = (req, res) => {
   Pet.findAll({
-    // where: { status: 1 },
-    where: { checkAdmin: 2 },
-    attributes: ["type"],
+    where: { status: 1 },
+    // where: { checkAdmin: 2 },
+    attributes: ["CategoryPetId"],
   })
     .then((data) => {
-        console.log("dataaa",data);
-      let dog = 0;
-      let cat = 0;
-      let other = 0;
-      for (let i = 0; i < data.length; i++) {
-        const element = data[i].dataValues.type;
-        if (element === "chó") {
-          dog += 1;
-        } else if (element === "mèo") {
-          cat += 1;
-        } else {
-          other += 1;
-        }
-      }
-      res.json({
-        countDog: dog,
-        countCat: cat,
-        countOther: other,
-        countAll: data.length,
-        countdata: data,
-      });
+        CategoryPet.findAndCountAll({
+            order: [["id", "DESC"]],
+        }).then((test)=>{
+            let dog = 0;
+            let cat = 0;
+            let other = 0;
+            for (let i = 0; i < data.length; i++) {
+              const element = data[i].dataValues.CategoryPetId;
+              if (element === 1) {
+                dog += 1;
+              } else if (element === 2) {
+                cat += 1;
+              } else {
+                other += 1;
+              }
+            }
+            res.json({
+              count1: dog,
+              count2: cat,
+              countOther: other,
+              countAll: test.length,
+            });
+        })
+      
     })
     .catch((er) => {
       throw er;

@@ -28,6 +28,14 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
+      tagId: {
+        type: Sequelize.INTEGER,
+        // references: {
+        //   model: "Users",
+        //   key: "id",
+        // },
+        // onDelete: "CASCADE",
+      },
       status: {
         type: Sequelize.INTEGER,
       },

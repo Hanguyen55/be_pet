@@ -37,6 +37,9 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER,
       },
+      CategoryPetId: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

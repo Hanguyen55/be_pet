@@ -4,6 +4,7 @@ module.exports = (app) => {
 
   router.post("/", Schedule.create);
   router.get("/", Schedule.findall);
+  router.get("/revenueService", Schedule.revenueservice);
   router.get("/:id", Schedule.findone);
   router.delete("/:id", Schedule.delete);
   router.patch("/:id", Schedule.update);

@@ -72,6 +72,20 @@ exports.findone = (req, res) => {
             throw er;
         });
 };
+exports.findallpet = (req, res) => {
+    // console.log("req",req.query.productId);
+    var petId = req.query.petId;
+    ImagePet.findAll({
+        where: { petId: petId },
+        order: [["id", "ASC"]],
+      })
+      .then((data) => {
+        res.json({ data: data });
+      })
+      .catch((er) => {
+        throw er;
+      });
+  };
 exports.delete = (req, res) => {
     ImagePet.destroy({ where: { id: req.params.id } })
         .then((data) => {

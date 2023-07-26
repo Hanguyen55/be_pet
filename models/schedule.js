@@ -10,19 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+        this.belongsTo(models.User, {
+          foreignKey: "useId",
+          targetKey: "id",
+        });
     }
   };
   Schedule.init({
+    useId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     address: DataTypes.STRING,
     note: DataTypes.TEXT,
     phone: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    typePet: DataTypes.STRING,
-    typeService: DataTypes.STRING,
-    typeWeight: DataTypes.STRING,
+    petId: DataTypes.INTEGER,
+    serviceId: DataTypes.INTEGER,
+    weightId: DataTypes.INTEGER,
     date: DataTypes.STRING,
     result: DataTypes.STRING,
   }, {

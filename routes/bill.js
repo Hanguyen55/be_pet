@@ -4,6 +4,7 @@ module.exports = (app) => {
 
   router.post("/", Bill.create);
   router.get("/", Bill.findall);
+  router.get("/revenues", Bill.revenues);
   router.get("/:id", Bill.findone);
   router.delete("/:id", Bill.delete);
   router.patch("/:id", Bill.update);

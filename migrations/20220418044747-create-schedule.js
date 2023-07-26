@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "RESTRICT",
+      },
       name: {
         type: Sequelize.STRING
       },
@@ -26,14 +34,14 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER,
       },
-      typePet: {
-        type: Sequelize.STRING
+      petId: {
+        type: Sequelize.INTEGER,
       },
-      typeService: {
-        type: Sequelize.STRING
+      serviceId: {
+        type: Sequelize.INTEGER,
       },
-      typeWeight: {
-        type: Sequelize.STRING
+      weightId: {
+        type: Sequelize.INTEGER,
       },
       date: {
         type: Sequelize.STRING

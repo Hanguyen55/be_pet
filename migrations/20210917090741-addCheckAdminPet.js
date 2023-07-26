@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return Promise.all([
-      queryInterface.addColumn("pets", "checkAdmin", {
+      queryInterface.addColumn("pets", "status", {
         type: Sequelize.INTEGER,
         allowNull: false,
       }),
@@ -11,6 +11,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return Promise.all([queryInterface.removeColumn("pets", "checkAdmin")]);
+    return Promise.all([queryInterface.removeColumn("pets", "status")]);
   },
 };

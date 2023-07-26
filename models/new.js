@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsToMany(models.Tag, { through: "TagNews" });
-      this.hasMany(models.TagNew, { foreignKey: "newId", as: "tagnew" });
+    //   this.belongsToMany(models.Tag, { through: "TagNews" });
+    //   this.hasMany(models.Tag, { foreignKey: "tagId", as: "tag" });
       this.belongsTo(models.User, { foreignKey: "userId", targetKey: "id" });
     }
   }
@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.TEXT,
       avatar: DataTypes.STRING(500),
       userId: DataTypes.INTEGER,
+      tagId: DataTypes.INTEGER,
       status: DataTypes.INTEGER,
     },
     {

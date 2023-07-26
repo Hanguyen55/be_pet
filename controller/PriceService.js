@@ -1,4 +1,6 @@
 var PriceService = require("../models").PriceService;
+var Weight = require("../models").Weight;
+var Service = require("../models").Service;
 require("dotenv").config();
 let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 exports.create = (req, res) => {
@@ -72,6 +74,54 @@ exports.findall = (req, res) => {
         throw er;
       });
   };
+  exports.findallprice = (req, res) => {
+    PriceService.findAndCountAll({
+        order: [["id", "ASC"]]
+    })
+      .then((data) => {
+        Service.findAndCountAll({
+            order: [["id", "ASC"]],
+            // where: { checkAdmin: 2 },
+            where: { status: 1 },
+        }).then((data2) => {
+            Weight.findAndCountAll({
+                order: [["id", "ASC"]],
+                // where: { checkAdmin: 2 },
+                where: { status: 1 },
+            }).then((data3) => {
+            let arrayData = [];
+            let newObjrct;
+            'use strict';
+            data.rows.forEach((el) => {
+                newObjrct = {
+                        ...el.dataValues,
+                        ...{weight: ""},
+                        ...{service: ""},
+                    }
+                    arrayData.push(newObjrct)
+            })
+            arrayData.forEach((el) => {
+                data2.rows.forEach((el2) => {
+                    data3.rows.forEach((el3) => {
+                        if(el.weightId === el3.id ){
+                            el.weight = el3.weight;
+                        }
+                        if(el.serviceId === el2.id ){
+                            el.service = el2.name;
+                        }
+            })
+        })
+        })
+            res.json({ data: arrayData });
+    })
+            // res.json({ data: arrayData });
+          })
+        // res.json({ data: data });
+      })
+      .catch((er) => {
+        throw er;
+      });
+}
   exports.delete = (req, res) => {
     PriceService.destroy({ where: { id: req.params.id } })
       .then((data) => {

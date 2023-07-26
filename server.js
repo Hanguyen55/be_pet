@@ -28,6 +28,7 @@ require("./routes/SocialNetwork")(app);
 require("./routes/Login")(app);
 require("./routes/ImgPet")(app);
 require("./routes/category")(app);
+require("./routes/categoryPet")(app);
 require("./routes/Product")(app);
 require("./routes/TagProduct")(app);
 require("./routes/ImageProduct")(app);

@@ -6,8 +6,15 @@ const { Op } = require("sequelize");
 require("dotenv").config();
 let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 exports.create = (req, res) => {
-  Product.create(req.body, { include: ["imgproduct", "tagproduct"] })
+  Product.create(req.body, { include: ["imgproduct"] })
     .then((data) => {
+    ImageProduct.findAll({ where: { productId : null}})
+    .then((data2) => {
+        for (let i = 0; i < data2.length; i++) {
+            let newData= {id: data2[i].dataValues.id,productId: data.dataValues.id}
+            ImageProduct.update(newData, { where: { id: newData.id } })
+        }
+      })
       res.json({ data: data });
     })
     .catch((er) => {
@@ -75,7 +82,7 @@ exports.findone = (req, res) => {
   Product.findOne({
     where: { id: req.params.id },
     include: [
-      { model: Tag, where: { status: 1 } },
+    //   { model: Tag, where: { status: 1 } },
       { model: ImageProduct, as: "imgproduct", attributes: ["link"] },
       { model: Category, attributes: ["id", "name"], where: { status: 1 } },
     ],
